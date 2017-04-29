@@ -3,6 +3,7 @@ import {CoursesComponent} from "./courses.component";
 import {AuthorsComponent} from "./authors.component";
 import {FavoriteComponent} from "./favorite.component";
 import {HeartComponent} from "./heart.component";
+import {VoterComponent} from "./voter.component";
 
 @Component({
     selector: 'my-app',
@@ -12,8 +13,9 @@ import {HeartComponent} from "./heart.component";
         <authors></authors>
         <favorite></favorite>
         <heart [liked]="heart.liked" [count]="heart.count" (clickEvent)="onLikeChanged($event)"></heart>
+        <voter [voteCount]="votes.count" [myVote]="votes.myVote" (vote)="onVote($event)"></voter>
     `,
-    directives: [CoursesComponent, AuthorsComponent, FavoriteComponent, HeartComponent]
+    directives: [CoursesComponent, AuthorsComponent, FavoriteComponent, HeartComponent, VoterComponent]
 })
 export class AppComponent {
     heart = {
@@ -21,8 +23,17 @@ export class AppComponent {
         liked: false
     };
 
+    votes = {
+        count: 12,
+        myVote: 0
+    };
+
     onLikeChanged($event) {
         console.log('New like count is now:', $event.newCount);
+    }
+
+    onVote($event) {
+        console.log('User voted:', $event.vote);
     }
 
 }
