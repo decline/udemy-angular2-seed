@@ -4,6 +4,9 @@ import {AuthorsComponent} from "./authors.component";
 import {FavoriteComponent} from "./favorite.component";
 import {HeartComponent} from "./heart.component";
 import {VoterComponent} from "./voter.component";
+import {TweetService} from "./twitter/tweet.service";
+import {Tweet} from "./twitter/tweet";
+import {TweetComponent} from "./twitter/tweet.component";
 
 @Component({
     selector: 'my-app',
@@ -14,10 +17,20 @@ import {VoterComponent} from "./voter.component";
         <favorite></favorite>
         <heart [liked]="heart.liked" [count]="heart.count" (clickEvent)="onLikeChanged($event)"></heart>
         <voter [voteCount]="votes.count" [myVote]="votes.myVote" (vote)="onVote($event)"></voter>
+        <div *ngFor="#tweet of tweets">
+            <tweet [tweet]="tweet"></tweet>
+        </div>
     `,
-    directives: [CoursesComponent, AuthorsComponent, FavoriteComponent, HeartComponent, VoterComponent]
+    directives: [CoursesComponent, AuthorsComponent, FavoriteComponent, HeartComponent, VoterComponent, TweetComponent],
+    providers: [TweetService]
 })
 export class AppComponent {
+    tweets:Tweet[];
+
+    constructor(tweetService: TweetService) {
+        this.tweets = tweetService.getTweets();
+    }
+
     heart = {
         count: 10,
         liked: false
